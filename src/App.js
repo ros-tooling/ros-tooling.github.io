@@ -5,27 +5,75 @@ import Navbar from 'react-bootstrap/Navbar'
 import Table from 'react-bootstrap/Table';
 
 const latest_packages = {
-  "ros-tooling/action-amazon-chime": {},
-  "ros-tooling/action-cloudwatch-metrics": {},
-  "ros-tooling/action-pypi": {},
+  "ros-tooling/action-amazon-chime": {"no_codecov": true},
+  "ros-tooling/action-cloudwatch-metrics": {"no_codecov": true},
+  "ros-tooling/action-pypi": {"no_codecov": true},
   "ros-tooling/action-repository-activity": {},
   "ros-tooling/action-ros-ci": {},
-  "ros-tooling/action-ros-ci-template": {},
+  "ros-tooling/action-ros-ci-template": {"no_latest_test": true, "no_codecov": true},
   "ros-tooling/action-ros-lint": {},
-  "ros-tooling/cross_compile": {},
+  "ros-tooling/cross_compile": {"nightly_workflow": "End-to-end Testing (Nightly)"},
   "ros-tooling/github-contribution-report-generator": {},
   "ros-tooling/launch_ros_sandbox": {},
   "ros-tooling/libstatistics_collector": {},
   "ros-tooling/setup-ros": {},
-  "ros-tooling/setup-ros-docker": {},
-  "ros-tooling/system_metrics_collector": {},
-  "ros2/rosbag2": {},
-  "ros2/rosbag2_bag_v2": {},
+  "ros-tooling/setup-ros-docker": {"workflow_override": "Build Docker image", "no_codecov": true},
+  "ros-tooling/system_metrics_collector": {"nightly_workflow": "End-to-end Testing (Nightly)"},
+  "ros2/rosbag2": {"no_codecov": true},
+  "ros2/rosbag2_bag_v2": {"no_codecov": true},
 };
 
-const dashing_packages = ["cross_compile", "rosbag2", "rosbag2_bag_v2_plugins"];
-const eloquent_packages = ["cross_compile", "rosbag2", "rosbag2_bag_v2_plugins"];
-const foxy_packages = ["libstatistics_collector", "rosbag2", "rosbag2_bag_v2_plugins", "system_metrics_collector"];
+const dashing_packages = {
+  "cross_compile": {},
+  "ros2bag": {'no_dev_build': true},
+  "rosbag2": {},
+  "rosbag2_converter_default_plugins": {'no_dev_build': true},
+  "rosbag2_storage": {'no_dev_build': true},
+  "rosbag2_storage_default_plugins": {'no_dev_build': true},
+  "rosbag2_test_common": {'no_dev_build': true},
+  "rosbag2_tests": {'no_dev_build': true},
+  "rosbag2_transport": {'no_dev_build': true},
+  "shared_queues_vendor": {'no_dev_build': true},
+  "sqlite3_vendor": {'no_dev_build': true},
+  "ros1_rosbag_storage_vendor": {'no_dev_build': true},
+  "rosbag2_bag_v2_plugins": {'no_dev_build': true},
+};
+
+const eloquent_packages = {
+  "cross_compile": {},
+  "ros2bag": {'no_dev_build': true},
+  "rosbag2": {},
+  "rosbag2_converter_default_plugins": {'no_dev_build': true},
+  "rosbag2_storage": {'no_dev_build': true},
+  "rosbag2_storage_default_plugins": {'no_dev_build': true},
+  "rosbag2_test_common": {'no_dev_build': true},
+  "rosbag2_tests": {'no_dev_build': true},
+  "rosbag2_transport": {'no_dev_build': true},
+  "shared_queues_vendor": {'no_dev_build': true},
+  "sqlite3_vendor": {'no_dev_build': true},
+  "ros1_rosbag_storage_vendor": {'no_dev_build': true},
+  "rosbag2_bag_v2_plugins": {'no_dev_build': true},
+};
+
+const foxy_packages = {
+  "ros2bag": {"no_dev_build": true},
+  "rosbag2": {},
+  "rosbag2_compression": {"no_dev_build": true},
+  "rosbag2_converter_default_plugins": {"no_dev_build": true},
+  "rosbag2_cpp": {"no_dev_build": true},
+  "rosbag2_storage": {"no_dev_build": true},
+  "rosbag2_storage_default_plugins": {"no_dev_build": true},
+  "rosbag2_test_common": {"no_dev_build": true},
+  "rosbag2_tests": {"no_dev_build": true},
+  "rosbag2_transport": {"no_dev_build": true},
+  "shared_queues_vendor": {"no_dev_build": true},
+  "sqlite3_vendor": {"no_dev_build": true},
+  "zstd_vendor": {"no_dev_build": true},
+  "ros1_rosbag_storage_vendor": {"no_dev_build": true},
+  "rosbag2_bag_v2_plugins": {"no_dev_build": true},
+  "libstatistics_collector": {},
+  "system_metrics_collector": {},
+};
 
 const ros_distro_to_ubuntu_distro = {
   "dashing": "bionic",
@@ -33,22 +81,53 @@ const ros_distro_to_ubuntu_distro = {
   "foxy": "focal",
 };
 
+const Empty = (
+  <p>N/A</p>
+);
+
+function sanitize(url_component) {
+  return url_component.replace(" ", "%20");
+}
+
+
 function RepoLink({ name }) {
   return (
     <a href={`https://github.com/${name}`}>{name}</a>
   );
 }
 
-function ActionLink({name}) {
+function ActionLink({name, config}) {
+  if (config.no_latest_test) {
+    return Empty;
+  }
   const repo = name.split('/')[1];
+  let workflow = `Test ${repo}`;
+  if (config.workflow_override) {
+    workflow = config.workflow_override;
+  }
+  workflow = sanitize(workflow);
   return (
     <a href={`https://github.com/${name}/actions`}>
-      <img src={`https://github.com/${name}/workflows/Test%20${repo}/badge.svg`} alt="test status badge" />
+      <img src={`https://github.com/${name}/workflows/${workflow}/badge.svg`} alt="test status badge" />
     </a>
   );
 }
 
-function CodecovLink({ name }) {
+function NightlyActionLink({ name, config }) {
+  if (!config.nightly_workflow) {
+    return Empty;
+  }
+  return(
+    <a href={`https://github.com/${name}/actions`}>
+      <img src={`https://github.com/${name}/workflows/${sanitize(config.nightly_workflow)}/badge.svg`} alt="test status badge" />
+    </a>
+  );
+}
+
+function CodecovLink({ name, config }) {
+  if (config.no_codecov) {
+    return Empty;
+  }
   return (
     <a href={`https://codecov.io/gh/${name}`}>
       <img src={`https://codecov.io/gh/${name}/branch/master/graph/badge.svg`} alt="codecov badge" />
@@ -87,14 +166,14 @@ function DevelopmentStatusTable() {
     </thead>
     <tbody>
       {
-        Object.keys(latest_packages).map(p =>
-          <tr key={p}>
-            <td><RepoLink name={p} /></td>
-            <td><ActionLink name={p} /></td>
-            <td>N/A</td>
-            <td><CodecovLink name={p} /></td>
-            <td><IssuesLink name={p} /></td>
-            <td><PRsLink name={p} /></td>
+        Object.entries(latest_packages).map(([name, config]) =>
+          <tr key={name}>
+            <td><RepoLink name={name} /></td>
+            <td><ActionLink name={name} config={config} /></td>
+            <td><NightlyActionLink name={name} config={config} /></td>
+            <td><CodecovLink name={name} config={config} /></td>
+            <td><IssuesLink name={name} /></td>
+            <td><PRsLink name={name} /></td>
           </tr>
         )
       }
@@ -103,8 +182,8 @@ function DevelopmentStatusTable() {
   );
 }
 
-function Ros2BuildIcon({ distro, pkg, build_type }) {
-  // For reference
+function Ros2BuildIcon({ distro, pkg, config, build_type }) {
+  // Some short-tag values for reference
   // Ddev
   // Dsrc_uB
   // Dbin_uB64
@@ -116,6 +195,15 @@ function Ros2BuildIcon({ distro, pkg, build_type }) {
   const ubuntu_initial = ubuntu_distro[0].toUpperCase();
   let short_tag = ``;
   let long_tag = ``;
+
+
+  if (distro === "foxy" && build_type === "armhf") {
+    return Empty;
+  }
+  if (build_type === "dev" && config.no_dev_build) {
+    return Empty;
+  }
+
   switch (build_type) {
     case "dev":
       short_tag = `${initial}dev`;
@@ -164,14 +252,14 @@ function DistroReleaseTable({ distro, packages }) {
       </thead>
       <tbody>
       {
-        packages.map(p =>
-          <tr key={p}>
-            <td>{p}</td>
-            <td><Ros2BuildIcon distro={distro} pkg={p} build_type="dev" /></td>
-            <td><Ros2BuildIcon distro={distro} pkg={p} build_type="src" /></td>
-            <td><Ros2BuildIcon distro={distro} pkg={p} build_type="x86_64" /></td>
-            <td><Ros2BuildIcon distro={distro} pkg={p} build_type="aarch64" /></td>
-            <td><Ros2BuildIcon distro={distro} pkg={p} build_type="armhf" /></td>
+        Object.entries(packages).map(([name, config]) =>
+          <tr key={name}>
+            <td>{name}</td>
+            <td><Ros2BuildIcon distro={distro} pkg={name} config={config} build_type="dev" /></td>
+            <td><Ros2BuildIcon distro={distro} pkg={name} config={config} build_type="src" /></td>
+            <td><Ros2BuildIcon distro={distro} pkg={name} config={config} build_type="x86_64" /></td>
+            <td><Ros2BuildIcon distro={distro} pkg={name} config={config} build_type="aarch64" /></td>
+            <td><Ros2BuildIcon distro={distro} pkg={name} config={config} build_type="armhf" /></td>
           </tr>
         )
       }
