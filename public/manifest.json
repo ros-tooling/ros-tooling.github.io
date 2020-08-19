@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "ros-tooling dashboard",
+  "name": "ROS 2 Tooling Working Group Dashboard",
   "icons": [
     {
       "src": "favicon.ico",
