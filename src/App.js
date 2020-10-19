@@ -24,7 +24,6 @@ const latest_packages = {
 };
 
 const dashing_packages = {
-  "cross_compile": {},
   "ros2bag": {'no_dev_build': true},
   "rosbag2": {},
   "rosbag2_converter_default_plugins": {'no_dev_build': true},
@@ -40,7 +39,6 @@ const dashing_packages = {
 };
 
 const eloquent_packages = {
-  "cross_compile": {},
   "ros2bag": {'no_dev_build': true},
   "rosbag2": {},
   "rosbag2_converter_default_plugins": {'no_dev_build': true},
