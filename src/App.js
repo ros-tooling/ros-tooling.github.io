@@ -5,7 +5,6 @@ import Navbar from 'react-bootstrap/Navbar'
 import Table from 'react-bootstrap/Table';
 
 const latest_packages = {
-  "ros-tooling/action-amazon-chime": {"no_codecov": true},
   "ros-tooling/action-cloudwatch-metrics": {"no_codecov": true},
   "ros-tooling/action-pypi": {"no_codecov": true},
   "ros-tooling/action-repository-activity": {},
@@ -13,7 +12,6 @@ const latest_packages = {
   "ros-tooling/action-ros-ci-template": {"no_latest_test": true, "no_codecov": true},
   "ros-tooling/action-ros-lint": {},
   "ros-tooling/cross_compile": {"nightly_workflow": "End-to-end Testing (Nightly)"},
-  "ros-tooling/github-contribution-report-generator": {},
   "ros-tooling/launch_ros_sandbox": {},
   "ros-tooling/libstatistics_collector": {},
   "ros-tooling/setup-ros": {},
