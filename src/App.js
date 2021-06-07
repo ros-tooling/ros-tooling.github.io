@@ -21,21 +21,6 @@ const latest_packages = {
   "ros2/rosbag2_bag_v2": {"no_codecov": true},
 };
 
-const dashing_packages = {
-  "ros2bag": {'no_dev_build': true},
-  "rosbag2": {},
-  "rosbag2_converter_default_plugins": {'no_dev_build': true},
-  "rosbag2_storage": {'no_dev_build': true},
-  "rosbag2_storage_default_plugins": {'no_dev_build': true},
-  "rosbag2_test_common": {'no_dev_build': true},
-  "rosbag2_tests": {'no_dev_build': true},
-  "rosbag2_transport": {'no_dev_build': true},
-  "shared_queues_vendor": {'no_dev_build': true},
-  "sqlite3_vendor": {'no_dev_build': true},
-  "ros1_rosbag_storage_vendor": {'no_dev_build': true},
-  "rosbag2_bag_v2_plugins": {'no_dev_build': true},
-};
-
 const foxy_packages = {
   "ros2bag": {"no_dev_build": true},
   "rosbag2": {},
@@ -56,12 +41,34 @@ const foxy_packages = {
   "system_metrics_collector": {},
 };
 
+const galactic_packages = {
+"ros2bag": {"no_dev_build": true},
+  "rosbag2": {},
+  "rosbag2_compression": {"no_dev_build": true},
+  "rosbag2_compression_zstd": {"no_dev_build": true},
+  "rosbag2_cpp": {"no_dev_build": true},
+  "rosbag2_interfaces": {"no_dev_build": true},
+  "rosbag2_py": {"no_dev_build": true},
+  "rosbag2_storage": {"no_dev_build": true},
+  "rosbag2_storage_default_plugins": {"no_dev_build": true},
+  "rosbag2_test_common": {"no_dev_build": true},
+  "rosbag2_tests": {"no_dev_build": true},
+  "rosbag2_transport": {"no_dev_build": true},
+  "shared_queues_vendor": {"no_dev_build": true},
+  "sqlite3_vendor": {"no_dev_build": true},
+  "zstd_vendor": {"no_dev_build": true},
+  "ros1_rosbag_storage_vendor": {"no_dev_build": true},
+  "rosbag2_bag_v2_plugins": {"no_dev_build": true},
+  "libstatistics_collector": {},
+};
+
 const rolling_packages = {
   "ros2bag": {"no_dev_build": true},
   "rosbag2": {},
   "rosbag2_compression": {"no_dev_build": true},
-  "rosbag2_converter_default_plugins": {"no_dev_build": true},
+  "rosbag2_compression_zstd": {"no_dev_build": true},
   "rosbag2_cpp": {"no_dev_build": true},
+  "rosbag2_interfaces": {"no_dev_build": true},
   "rosbag2_py": {"no_dev_build": true},
   "rosbag2_storage": {"no_dev_build": true},
   "rosbag2_storage_default_plugins": {"no_dev_build": true},
@@ -190,26 +197,31 @@ function Ros2BuildIcon({ distro, pkg, config, build_type }) {
     "dev": {
       "dashing": sl("Ddev", "ubuntu_bionic_amd64"),
       "foxy": sl("Fdev", "ubuntu_focal_amd64"),
+      "galactic": sl("Gdev", "ubuntu_focal_amd64"),
       "rolling": sl("Rdev", "ubuntu_focal_amd64"),
     },
     "src": {
       "dashing": sl("Dsrc_uB", "ubuntu_bionic__source"),
       "foxy": sl("Fsrc_uF", "ubuntu_focal__source"),
+      "galactic": sl("Gsrc_uF", "ubuntu_focal__source"),
       "rolling": sl("Rsrc_uF", "ubuntu_focal__source"),
     },
     "x86_64": {
       "dashing": sl("Dbin_uB64", "ubuntu_bionic_amd64__binary"),
       "foxy": sl("Fbin_uF64", "ubuntu_focal_amd64__binary"),
+      "galactic": sl("Gbin_uF64", "ubuntu_focal_amd64__binary"),
       "rolling": sl("Rbin_uF64", "ubuntu_focal_amd64__binary"),
     },
     "aarch64": {
       "dashing": sl("Dbin_ubv8_uBv8", "ubuntu_bionic_arm64__binary"),
       "foxy": sl("Fbin_ubv8_uFv8", "ubuntu_focal_arm64__binary"),
+      "galactic": sl("Gbin_ufv8_uFv8", "ubuntu_focal_arm64__binary"),
       "rolling": sl("Rbin_ufv8_uFv8", "ubuntu_focal_arm64__binary"),
     },
     "armhf": {
       "dashing": sl("Dbin_ubhf_uBhf", "ubuntu_bionic_armhf__binary"),
       "foxy": undefined,
+      "galactic": undefined,
       "rolling": undefined,
     }
   }
@@ -278,12 +290,12 @@ function App() {
           <DistroReleaseTable distro="rolling" packages={rolling_packages} />
         </Row>
         <Row>
-          <h1> Released Packages - Foxy Fitzroy</h1>
-          <DistroReleaseTable distro="foxy" packages={foxy_packages} />
+          <h1>Released Packages - Galactic Geochelone</h1>
+          <DistroReleaseTable distro="galactic" packages={galactic_packages} />
         </Row>
         <Row>
-          <h1>Released Packages - Dashing Diademata</h1>
-          <DistroReleaseTable distro="dashing" packages={dashing_packages} />
+          <h1> Released Packages - Foxy Fitzroy</h1>
+          <DistroReleaseTable distro="foxy" packages={foxy_packages} />
         </Row>
       </Container>
     </div>
