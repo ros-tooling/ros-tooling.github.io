@@ -6,8 +6,6 @@ import Table from 'react-bootstrap/Table';
 
 const latest_packages = {
   "ros-tooling/action-cloudwatch-metrics": {"no_codecov": true},
-  "ros-tooling/action-pypi": {"no_codecov": true},
-  "ros-tooling/action-repository-activity": {},
   "ros-tooling/action-ros-ci": {},
   "ros-tooling/action-ros-ci-template": {"no_latest_test": true, "no_codecov": true},
   "ros-tooling/action-ros-lint": {},
